@@ -1,46 +1,46 @@
-'use client'
+"use client";
 
-import * as React from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Menu, X, ShoppingCart, Moon, Sun } from 'lucide-react'
-import { useTheme } from 'next-themes'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { useCart } from '@/hooks/use-cart'
-import { cn } from '@/lib/utils'
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, ShoppingCart, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useCart } from "@/hooks/use-cart";
+import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Products', href: '/products' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'FAQ', href: '/faq' },
-] as const
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Products", href: "/products" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact", href: "/contact" },
+  { label: "FAQ", href: "/faq" },
+] as const;
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = React.useState(false)
-  const [mounted, setMounted] = React.useState(false)
-  const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
-  const itemCount = useCart((s) => s.itemCount())
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const itemCount = useCart((s) => s.itemCount());
 
-  React.useEffect(() => setMounted(true), [])
+  React.useEffect(() => setMounted(true), []);
 
   // Prevent body scroll when mobile menu open
   React.useEffect(() => {
     if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = ''
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = ''
-    }
-  }, [mobileOpen])
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark')
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-green-200/60 bg-white/80 backdrop-blur-md dark:border-green-800/60 dark:bg-green-950/80">
@@ -63,10 +63,10 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 pathname === link.href
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
-                  : 'text-green-700 hover:bg-green-50 hover:text-green-800 dark:text-green-300 dark:hover:bg-green-900 dark:hover:text-green-100',
+                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+                  : "text-green-700 hover:bg-green-50 hover:text-green-800 dark:text-green-300 dark:hover:bg-green-900 dark:hover:text-green-100",
               )}
             >
               {link.label}
@@ -85,7 +85,7 @@ export function Navbar() {
             className="text-green-700 dark:text-green-300"
           >
             {mounted ? (
-              theme === 'dark' ? (
+              theme === "dark" ? (
                 <Sun className="h-5 w-5" />
               ) : (
                 <Moon className="h-5 w-5" />
@@ -109,7 +109,7 @@ export function Navbar() {
                   variant="destructive"
                   className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-[10px] font-bold"
                 >
-                  {itemCount > 99 ? '99+' : itemCount}
+                  {itemCount > 99 ? "99+" : itemCount}
                 </Badge>
               )}
             </Button>
@@ -148,10 +148,10 @@ export function Navbar() {
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'block rounded-lg px-4 py-3 text-base font-medium transition-colors',
+                  "block rounded-lg px-4 py-3 text-base font-medium transition-colors",
                   pathname === link.href
-                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
-                    : 'text-green-700 hover:bg-green-50 hover:text-green-800 dark:text-green-300 dark:hover:bg-green-900 dark:hover:text-green-100',
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+                    : "text-green-700 hover:bg-green-50 hover:text-green-800 dark:text-green-300 dark:hover:bg-green-900 dark:hover:text-green-100",
                 )}
               >
                 {link.label}
@@ -161,5 +161,5 @@ export function Navbar() {
         </>
       )}
     </header>
-  )
+  );
 }

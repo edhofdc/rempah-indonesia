@@ -1,51 +1,51 @@
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
-import { Navbar } from '@/components/layout/navbar'
-import { Footer } from '@/components/layout/footer'
-import { ThemeProvider } from '@/components/providers/theme-provider'
-import { CartProvider } from '@/components/providers/cart-provider'
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { CartProvider } from "@/components/providers/cart-provider";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: {
-    default: 'Rempah Indonesia - Authentic Spices',
-    template: '%s | Rempah Indonesia',
+    default: "Rempah Indonesia - Authentic Spices",
+    template: "%s | Rempah Indonesia",
   },
   description:
-    'Rempah Indonesia brings you the finest authentic Indonesian spices, herbs, and seasonings. Direct from farms in the archipelago to your kitchen.',
+    "Rempah Indonesia brings you the finest authentic Indonesian spices, herbs, and seasonings. Direct from farms in the archipelago to your kitchen.",
   keywords: [
-    'Indonesian spices',
-    'authentic spices',
-    'rempah',
-    'Indonesia',
-    'herbs',
-    'seasoning',
+    "Indonesian spices",
+    "authentic spices",
+    "rempah",
+    "Indonesia",
+    "herbs",
+    "seasoning",
   ],
-  authors: [{ name: 'Rempah Indonesia' }],
+  authors: [{ name: "Rempah Indonesia" }],
   openGraph: {
-    title: 'Rempah Indonesia - Authentic Spices',
+    title: "Rempah Indonesia - Authentic Spices",
     description:
-      'Your trusted source for authentic Indonesian spices and herbs.',
-    type: 'website',
-    locale: 'id_ID',
-    siteName: 'Rempah Indonesia',
+      "Your trusted source for authentic Indonesian spices and herbs.",
+    type: "website",
+    locale: "id_ID",
+    siteName: "Rempah Indonesia",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html
@@ -63,5 +63,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

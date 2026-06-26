@@ -1,12 +1,12 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { notFound } from 'next/navigation'
-import { prisma } from '@/lib/db'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { formatPrice } from '@/lib/utils'
-import { AddToCartButton } from './add-to-cart-button'
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/db";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
+import { AddToCartButton } from "./add-to-cart-button";
 import {
   Leaf,
   Package,
@@ -20,7 +20,7 @@ import {
   Truck,
   Sparkles,
   Star,
-} from 'lucide-react'
+} from "lucide-react";
 
 // ─── Data fetching ──────────────────────────────────────────────
 
@@ -29,10 +29,10 @@ async function getProduct(id: string) {
     where: { id },
     include: {
       category: true,
-      images: { orderBy: { isPrimary: 'desc' } },
+      images: { orderBy: { isPrimary: "desc" } },
     },
-  })
-  return product
+  });
+  return product;
 }
 
 async function getRelatedProducts(
@@ -44,24 +44,24 @@ async function getRelatedProducts(
     where: {
       categoryId,
       id: { not: excludeId },
-      status: 'active',
+      status: "active",
     },
     include: {
       images: { where: { isPrimary: true }, take: 1 },
     },
     take: limit,
-  })
-  return products
+  });
+  return products;
 }
 
 // ─── Benefits list parser ───────────────────────────────────────
 
 function parseBenefits(benefits: string | null): string[] {
-  if (!benefits) return []
+  if (!benefits) return [];
   return benefits
-    .split('\n')
+    .split("\n")
     .map((b) => b.trim())
-    .filter(Boolean)
+    .filter(Boolean);
 }
 
 // ─── Breadcrumb ─────────────────────────────────────────────────
@@ -70,8 +70,8 @@ function ProductBreadcrumb({
   categoryName,
   productName,
 }: {
-  categoryName: string
-  productName: string
+  categoryName: string;
+  productName: string;
 }) {
   return (
     <nav className="flex items-center gap-2 text-sm text-green-500">
@@ -99,7 +99,7 @@ function ProductBreadcrumb({
       <ChevronRight className="h-3.5 w-3.5" />
       <span className="text-green-700 dark:text-green-300">{productName}</span>
     </nav>
-  )
+  );
 }
 
 // ─── Product Detail Page ────────────────────────────────────────
@@ -107,20 +107,20 @@ function ProductBreadcrumb({
 export default async function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params
-  const product = await getProduct(id)
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) {
-    notFound()
+    notFound();
   }
 
   const relatedProducts = await getRelatedProducts(
     product.categoryId,
     product.id,
-  )
-  const benefits = parseBenefits(product.benefits)
+  );
+  const benefits = parseBenefits(product.benefits);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-green-950 dark:to-green-950">
@@ -178,8 +178,8 @@ export default async function ProductDetailPage({
                     key={img.id}
                     className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-colors ${
                       idx === 0
-                        ? 'border-green-600 dark:border-green-500'
-                        : 'border-green-200 hover:border-green-400 dark:border-green-800 dark:hover:border-green-600'
+                        ? "border-green-600 dark:border-green-500"
+                        : "border-green-200 hover:border-green-400 dark:border-green-800 dark:hover:border-green-600"
                     }`}
                   >
                     <Image
@@ -212,7 +212,9 @@ export default async function ProductDetailPage({
                 {formatPrice(product.price)}
               </span>
               {product.weight && (
-                <span className="text-sm text-green-500">/{product.weight}</span>
+                <span className="text-sm text-green-500">
+                  /{product.weight}
+                </span>
               )}
             </div>
 
@@ -239,7 +241,7 @@ export default async function ProductDetailPage({
                   <CheckCircle2 className="h-4 w-4 text-green-500" />
                   <span className="text-sm text-green-700 dark:text-green-300">
                     {product.stock >= 10
-                      ? 'In Stock'
+                      ? "In Stock"
                       : `Only ${product.stock} left in stock`}
                   </span>
                 </>
@@ -291,9 +293,7 @@ export default async function ProductDetailPage({
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    image:
-                      product.images[0]?.url ??
-                      '/placeholder-product.svg',
+                    image: product.images[0]?.url ?? "/placeholder-product.svg",
                     slug: product.slug,
                   }}
                   disabled={product.stock <= 0}
@@ -332,7 +332,7 @@ export default async function ProductDetailPage({
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {relatedProducts.map((rp) => {
-                const primaryImage = rp.images[0]
+                const primaryImage = rp.images[0];
                 return (
                   <Link key={rp.id} href={`/products/${rp.id}`}>
                     <Card className="group h-full overflow-hidden transition-shadow hover:shadow-lg">
@@ -361,7 +361,7 @@ export default async function ProductDetailPage({
                       </CardContent>
                     </Card>
                   </Link>
-                )
+                );
               })}
             </div>
           </div>
@@ -375,26 +375,26 @@ export default async function ProductDetailPage({
             {[
               {
                 icon: Leaf,
-                title: '100% Natural',
-                desc: 'No additives or preservatives',
+                title: "100% Natural",
+                desc: "No additives or preservatives",
               },
               {
                 icon: Truck,
-                title: 'Fast Shipping',
-                desc: 'Orders processed within 24 hours',
+                title: "Fast Shipping",
+                desc: "Orders processed within 24 hours",
               },
               {
                 icon: Heart,
-                title: 'Fair Trade',
-                desc: 'Supporting local farmers',
+                title: "Fair Trade",
+                desc: "Supporting local farmers",
               },
               {
                 icon: Star,
-                title: 'Premium Quality',
-                desc: 'Hand-selected & inspected',
+                title: "Premium Quality",
+                desc: "Hand-selected & inspected",
               },
             ].map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
                 <div
                   key={item.title}
@@ -406,11 +406,11 @@ export default async function ProductDetailPage({
                   </p>
                   <p className="text-xs text-green-500">{item.desc}</p>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

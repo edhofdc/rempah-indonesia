@@ -1,2 +1,2 @@
-export { ThemeProvider } from './theme-provider'
-export { CartProvider } from './cart-provider'
+export { ThemeProvider } from "./theme-provider";
+export { CartProvider } from "./cart-provider";

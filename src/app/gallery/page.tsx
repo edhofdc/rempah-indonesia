@@ -1,26 +1,26 @@
-import Image from 'next/image'
-import { prisma } from '@/lib/db'
-import { Badge } from '@/components/ui/badge'
-import { Camera, Filter } from 'lucide-react'
+import Image from "next/image";
+import { prisma } from "@/lib/db";
+import { Badge } from "@/components/ui/badge";
+import { Camera, Filter } from "lucide-react";
 
 // ─── Data fetching ──────────────────────────────────────────────
 
 async function getGalleryImages() {
   const images = await prisma.galleryImage.findMany({
-    orderBy: { createdAt: 'desc' },
-  })
-  return images
+    orderBy: { createdAt: "desc" },
+  });
+  return images;
 }
 
 // ─── Gallery Page ───────────────────────────────────────────────
 
 export default async function GalleryPage() {
-  const images = await getGalleryImages()
+  const images = await getGalleryImages();
 
   // Get unique categories
   const categories = [
     ...new Set(images.map((img) => img.category).filter(Boolean)),
-  ] as string[]
+  ] as string[];
 
   return (
     <div className="min-h-screen">
@@ -72,7 +72,7 @@ export default async function GalleryPage() {
                   >
                     <Image
                       src={img.url}
-                      alt={img.alt ?? 'Gallery image'}
+                      alt={img.alt ?? "Gallery image"}
                       width={800}
                       height={600}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -87,10 +87,7 @@ export default async function GalleryPage() {
                         </p>
                       )}
                       {img.category && (
-                        <Badge
-                          variant="secondary"
-                          className="mt-1 self-start"
-                        >
+                        <Badge variant="secondary" className="mt-1 self-start">
                           {img.category}
                         </Badge>
                       )}
@@ -114,5 +111,5 @@ export default async function GalleryPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

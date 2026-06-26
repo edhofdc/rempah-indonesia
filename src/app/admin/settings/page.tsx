@@ -1,87 +1,97 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Settings, Save, Building2, Phone, Mail, MapPin, MessageCircle } from 'lucide-react'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Settings,
+  Save,
+  Building2,
+  Phone,
+  Mail,
+  MapPin,
+  MessageCircle,
+} from "lucide-react";
 
 interface SettingsData {
-  settings: Record<string, string>
+  settings: Record<string, string>;
   companyProfile: {
-    id: string
-    companyName: string
-    tagline: string
-    description: string
-    vision: string | null
-    mission: string | null
-    address: string | null
-    phone: string | null
-    email: string | null
-    whatsapp: string | null
-  } | null
+    id: string;
+    companyName: string;
+    tagline: string;
+    description: string;
+    vision: string | null;
+    mission: string | null;
+    address: string | null;
+    phone: string | null;
+    email: string | null;
+    whatsapp: string | null;
+  } | null;
 }
 
 export default function AdminSettingsPage() {
-  const router = useRouter()
-  const [data, setData] = useState<SettingsData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
+  const router = useRouter();
+  const [data, setData] = useState<SettingsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // Company form
-  const [companyName, setCompanyName] = useState('')
-  const [tagline, setTagline] = useState('')
-  const [description, setDescription] = useState('')
-  const [address, setAddress] = useState('')
-  const [phone, setPhone] = useState('')
-  const [email, setEmail] = useState('')
-  const [whatsapp, setWhatsapp] = useState('')
+  const [companyName, setCompanyName] = useState("");
+  const [tagline, setTagline] = useState("");
+  const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
 
   // WhatsApp number setting
-  const [whatsappNumber, setWhatsappNumber] = useState('')
+  const [whatsappNumber, setWhatsappNumber] = useState("");
 
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const token = localStorage.getItem('admin_token')
-        const res = await fetch('/api/admin/settings', {
+        const token = localStorage.getItem("admin_token");
+        const res = await fetch("/api/admin/settings", {
           headers: { Authorization: `Bearer ${token}` },
-        })
-        if (!res.ok) throw new Error('Failed')
-        const json: SettingsData = await res.json()
-        setData(json)
+        });
+        if (!res.ok) throw new Error("Failed");
+        const json: SettingsData = await res.json();
+        setData(json);
 
         if (json.companyProfile) {
-          setCompanyName(json.companyProfile.companyName || '')
-          setTagline(json.companyProfile.tagline || '')
-          setDescription(json.companyProfile.description || '')
-          setAddress(json.companyProfile.address || '')
-          setPhone(json.companyProfile.phone || '')
-          setEmail(json.companyProfile.email || '')
-          setWhatsapp(json.companyProfile.whatsapp || '')
+          setCompanyName(json.companyProfile.companyName || "");
+          setTagline(json.companyProfile.tagline || "");
+          setDescription(json.companyProfile.description || "");
+          setAddress(json.companyProfile.address || "");
+          setPhone(json.companyProfile.phone || "");
+          setEmail(json.companyProfile.email || "");
+          setWhatsapp(json.companyProfile.whatsapp || "");
         }
-        setWhatsappNumber(json.settings.whatsapp_number || json.companyProfile?.whatsapp || '')
+        setWhatsappNumber(
+          json.settings.whatsapp_number || json.companyProfile?.whatsapp || "",
+        );
       } catch {
-        setError('Failed to load settings')
+        setError("Failed to load settings");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
-    fetchSettings()
-  }, [])
+    fetchSettings();
+  }, []);
 
   async function handleSaveCompany(e: React.FormEvent) {
-    e.preventDefault()
-    setSaving(true)
-    setError('')
-    setSuccess('')
+    e.preventDefault();
+    setSaving(true);
+    setError("");
+    setSuccess("");
 
     try {
-      const token = localStorage.getItem('admin_token')
-      const res = await fetch('/api/admin/settings', {
-        method: 'PUT',
+      const token = localStorage.getItem("admin_token");
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -95,37 +105,37 @@ export default function AdminSettingsPage() {
             whatsapp,
           },
         }),
-      })
-      if (!res.ok) throw new Error('Failed to save')
-      setSuccess('Company information updated successfully')
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      setSuccess("Company information updated successfully");
     } catch {
-      setError('Failed to save settings')
+      setError("Failed to save settings");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
   async function handleSaveWhatsapp() {
-    setSaving(true)
-    setError('')
-    setSuccess('')
+    setSaving(true);
+    setError("");
+    setSuccess("");
 
     try {
-      const token = localStorage.getItem('admin_token')
-      const res = await fetch('/api/admin/settings', {
-        method: 'PUT',
+      const token = localStorage.getItem("admin_token");
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ key: 'whatsapp_number', value: whatsappNumber }),
-      })
-      if (!res.ok) throw new Error('Failed to save')
-      setSuccess('WhatsApp number updated successfully')
+        body: JSON.stringify({ key: "whatsapp_number", value: whatsappNumber }),
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      setSuccess("WhatsApp number updated successfully");
     } catch {
-      setError('Failed to save')
+      setError("Failed to save");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
@@ -137,7 +147,7 @@ export default function AdminSettingsPage() {
           <p className="text-green-600 text-sm">Loading settings...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -148,10 +158,14 @@ export default function AdminSettingsPage() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">{error}</div>
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          {error}
+        </div>
       )}
       {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">{success}</div>
+        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+          {success}
+        </div>
       )}
 
       {/* WhatsApp Number */}
@@ -193,7 +207,9 @@ export default function AdminSettingsPage() {
         <form onSubmit={handleSaveCompany} className="p-5 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-green-700 mb-1">Company Name</label>
+              <label className="block text-sm font-medium text-green-700 mb-1">
+                Company Name
+              </label>
               <input
                 type="text"
                 value={companyName}
@@ -202,7 +218,9 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-green-700 mb-1">Tagline</label>
+              <label className="block text-sm font-medium text-green-700 mb-1">
+                Tagline
+              </label>
               <input
                 type="text"
                 value={tagline}
@@ -212,7 +230,9 @@ export default function AdminSettingsPage() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-green-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-green-700 mb-1">
+              Description
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -262,11 +282,11 @@ export default function AdminSettingsPage() {
               className="flex items-center gap-2 px-5 py-2.5 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors text-sm font-medium disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
-              {saving ? 'Saving...' : 'Save Changes'}
+              {saving ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }

@@ -1,30 +1,30 @@
-'use client'
+"use client";
 
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface CartItem {
-  id: string
-  name: string
-  price: number
-  quantity: number
-  image: string
-  slug: string
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  slug: string;
 }
 
 interface CartState {
-  items: CartItem[]
+  items: CartItem[];
 
   // Actions
-  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void
-  removeItem: (id: string) => void
-  updateQuantity: (id: string, quantity: number) => void
-  clearCart: () => void
+  addItem: (item: Omit<CartItem, "quantity"> & { quantity?: number }) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
 
   // Computed
-  subtotal: () => number
-  itemCount: () => number
-  hasItem: (id: string) => boolean
+  subtotal: () => number;
+  itemCount: () => number;
+  hasItem: (id: string) => boolean;
 }
 
 export const useCart = create<CartState>()(
@@ -34,7 +34,7 @@ export const useCart = create<CartState>()(
 
       addItem: (item) =>
         set((state) => {
-          const existing = state.items.find((i) => i.id === item.id)
+          const existing = state.items.find((i) => i.id === item.id);
           if (existing) {
             return {
               items: state.items.map((i) =>
@@ -42,14 +42,11 @@ export const useCart = create<CartState>()(
                   ? { ...i, quantity: i.quantity + (item.quantity ?? 1) }
                   : i,
               ),
-            }
+            };
           }
           return {
-            items: [
-              ...state.items,
-              { ...item, quantity: item.quantity ?? 1 },
-            ],
-          }
+            items: [...state.items, { ...item, quantity: item.quantity ?? 1 }],
+          };
         }),
 
       removeItem: (id) =>
@@ -62,9 +59,7 @@ export const useCart = create<CartState>()(
           items:
             quantity <= 0
               ? state.items.filter((i) => i.id !== id)
-              : state.items.map((i) =>
-                  i.id === id ? { ...i, quantity } : i,
-                ),
+              : state.items.map((i) => (i.id === id ? { ...i, quantity } : i)),
         })),
 
       clearCart: () => set({ items: [] }),
@@ -78,7 +73,7 @@ export const useCart = create<CartState>()(
       hasItem: (id) => get().items.some((i) => i.id === id),
     }),
     {
-      name: 'rempah-cart',
+      name: "rempah-cart",
     },
   ),
-)
+);

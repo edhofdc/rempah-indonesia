@@ -1,10 +1,10 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { prisma } from '@/lib/db'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatPrice } from '@/lib/utils'
+import Link from "next/link";
+import Image from "next/image";
+import { prisma } from "@/lib/db";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
 import {
   Leaf,
   ShieldCheck,
@@ -20,38 +20,38 @@ import {
   Phone,
   Mail,
   MapPin,
-} from 'lucide-react'
+} from "lucide-react";
 
 // ─── Data fetching ──────────────────────────────────────────────
 
 async function getFeaturedProducts() {
   const products = await prisma.product.findMany({
-    where: { status: 'active' },
+    where: { status: "active" },
     include: {
       category: true,
       images: { where: { isPrimary: true }, take: 1 },
     },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: 4,
-  })
-  return products
+  });
+  return products;
 }
 
 async function getTestimonials() {
   const testimonials = await prisma.testimonial.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: 3,
-  })
-  return testimonials
+  });
+  return testimonials;
 }
 
 async function getFAQs() {
   const faqs = await prisma.fAQ.findMany({
     where: { isActive: true },
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
     take: 4,
-  })
-  return faqs
+  });
+  return faqs;
 }
 
 // ─── Why Choose Us data ─────────────────────────────────────────
@@ -59,33 +59,33 @@ async function getFAQs() {
 const WHY_CHOOSE_US = [
   {
     icon: Leaf,
-    title: 'Premium Quality',
+    title: "Premium Quality",
     description:
-      'Carefully selected spices from the finest growing regions across the Indonesian archipelago.',
-    color: 'text-green-600 bg-green-100 dark:bg-green-900/50',
+      "Carefully selected spices from the finest growing regions across the Indonesian archipelago.",
+    color: "text-green-600 bg-green-100 dark:bg-green-900/50",
   },
   {
     icon: Award,
-    title: '100% Authentic',
+    title: "100% Authentic",
     description:
-      'Directly sourced from local farmers and traditional growers. No additives, no fillers.',
-    color: 'text-gold-600 bg-gold-100 dark:bg-gold-900/50',
+      "Directly sourced from local farmers and traditional growers. No additives, no fillers.",
+    color: "text-gold-600 bg-gold-100 dark:bg-gold-900/50",
   },
   {
     icon: Truck,
-    title: 'Fresh Delivery',
+    title: "Fresh Delivery",
     description:
-      'Packed and shipped with care to preserve aroma, flavor, and nutritional value.',
-    color: 'text-brown-600 bg-brown-100 dark:bg-brown-900/50',
+      "Packed and shipped with care to preserve aroma, flavor, and nutritional value.",
+    color: "text-brown-600 bg-brown-100 dark:bg-brown-900/50",
   },
   {
     icon: ShieldCheck,
-    title: 'Trusted Source',
+    title: "Trusted Source",
     description:
-      'Serving customers worldwide with consistent quality, fair trade practices, and satisfaction guaranteed.',
-    color: 'text-green-600 bg-green-100 dark:bg-green-900/50',
+      "Serving customers worldwide with consistent quality, fair trade practices, and satisfaction guaranteed.",
+    color: "text-green-600 bg-green-100 dark:bg-green-900/50",
   },
-]
+];
 
 // ─── Star Rating Component ──────────────────────────────────────
 
@@ -97,13 +97,13 @@ function StarRating({ rating }: { rating: number }) {
           key={i}
           className={`h-4 w-4 ${
             i < rating
-              ? 'fill-gold-400 text-gold-400'
-              : 'fill-green-200 text-green-200 dark:fill-green-800 dark:text-green-800'
+              ? "fill-gold-400 text-gold-400"
+              : "fill-green-200 text-green-200 dark:fill-green-800 dark:text-green-800"
           }`}
         />
       ))}
     </div>
-  )
+  );
 }
 
 // ─── Home Page ──────────────────────────────────────────────────
@@ -113,7 +113,7 @@ export default async function HomePage() {
     getFeaturedProducts(),
     getTestimonials(),
     getFAQs(),
-  ])
+  ]);
 
   return (
     <>
@@ -132,7 +132,7 @@ export default async function HomePage() {
             </div>
 
             <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-              The True Essence of{' '}
+              The True Essence of{" "}
               <span className="bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent">
                 Indonesia
               </span>
@@ -197,10 +197,10 @@ export default async function HomePage() {
                 About Rempah Indonesia
               </Badge>
               <h2 className="mb-6 text-3xl font-bold leading-tight text-brown-800 dark:text-cream-100 sm:text-4xl">
-                Bringing the Aromas of{' '}
+                Bringing the Aromas of{" "}
                 <span className="text-green-700 dark:text-green-400">
                   Nusantara
-                </span>{' '}
+                </span>{" "}
                 to the World
               </h2>
               <p className="mb-4 leading-relaxed text-green-700 dark:text-green-300">
@@ -271,10 +271,10 @@ export default async function HomePage() {
               <CardContent>
                 <ul className="space-y-3">
                   {[
-                    'Source the highest quality spices from sustainable farms across Indonesia',
-                    'Support local farmers through fair trade partnerships and community programs',
-                    'Deliver authentic flavors with exceptional freshness and quality',
-                    'Educate the world about the rich culinary traditions of Indonesia',
+                    "Source the highest quality spices from sustainable farms across Indonesia",
+                    "Support local farmers through fair trade partnerships and community programs",
+                    "Deliver authentic flavors with exceptional freshness and quality",
+                    "Educate the world about the rich culinary traditions of Indonesia",
                   ].map((item, i) => (
                     <li
                       key={i}
@@ -314,7 +314,7 @@ export default async function HomePage() {
           {featuredProducts.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featuredProducts.map((product) => {
-                const primaryImage = product.images[0]
+                const primaryImage = product.images[0];
                 return (
                   <Link key={product.id} href={`/products/${product.id}`}>
                     <Card className="group h-full overflow-hidden transition-shadow hover:shadow-lg">
@@ -356,7 +356,7 @@ export default async function HomePage() {
                       </CardContent>
                     </Card>
                   </Link>
-                )
+                );
               })}
             </div>
           ) : (
@@ -384,15 +384,15 @@ export default async function HomePage() {
               The Rempah Indonesia Difference
             </h2>
             <p className="mx-auto max-w-2xl text-green-600 dark:text-green-400">
-              We take pride in every spice we source, ensuring that each
-              product meets the highest standards of quality, authenticity, and
+              We take pride in every spice we source, ensuring that each product
+              meets the highest standards of quality, authenticity, and
               sustainability.
             </p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {WHY_CHOOSE_US.map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
                 <Card
                   key={item.title}
@@ -412,7 +412,7 @@ export default async function HomePage() {
                     </p>
                   </CardContent>
                 </Card>
-              )
+              );
             })}
           </div>
         </div>
@@ -547,21 +547,21 @@ export default async function HomePage() {
             {[
               {
                 icon: Phone,
-                label: 'Call Us',
-                value: '+62 812-3456-7890',
+                label: "Call Us",
+                value: "+62 812-3456-7890",
               },
               {
                 icon: Mail,
-                label: 'Email Us',
-                value: 'info@rempah-indonesia.com',
+                label: "Email Us",
+                value: "info@rempah-indonesia.com",
               },
               {
                 icon: MapPin,
-                label: 'Visit Us',
-                value: 'Jakarta, Indonesia',
+                label: "Visit Us",
+                value: "Jakarta, Indonesia",
               },
             ].map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
                 <div
                   key={item.label}
@@ -573,11 +573,11 @@ export default async function HomePage() {
                   </p>
                   <p className="text-sm text-white">{item.value}</p>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </section>
     </>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 
 // GET /api/categories - List all categories with product count
 export async function GET() {
@@ -10,30 +10,30 @@ export async function GET() {
           select: { products: true },
         },
       },
-      orderBy: { name: 'asc' },
-    })
+      orderBy: { name: "asc" },
+    });
 
-    return NextResponse.json(categories)
+    return NextResponse.json(categories);
   } catch (error) {
-    console.error('Error fetching categories:', error)
+    console.error("Error fetching categories:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch categories' },
-      { status: 500 }
-    )
+      { error: "Failed to fetch categories" },
+      { status: 500 },
+    );
   }
 }
 
 // POST /api/categories - Create category
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { name, slug, description, image } = body
+    const body = await request.json();
+    const { name, slug, description, image } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
-        { error: 'Missing required fields: name, slug' },
-        { status: 400 }
-      )
+        { error: "Missing required fields: name, slug" },
+        { status: 400 },
+      );
     }
 
     const category = await prisma.category.create({
@@ -43,25 +43,25 @@ export async function POST(request: NextRequest) {
         description: description || null,
         image: image || null,
       },
-    })
+    });
 
-    return NextResponse.json(category, { status: 201 })
+    return NextResponse.json(category, { status: 201 });
   } catch (error: unknown) {
     if (
       error &&
-      typeof error === 'object' &&
-      'code' in error &&
-      (error as { code: string }).code === 'P2002'
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code: string }).code === "P2002"
     ) {
       return NextResponse.json(
-        { error: 'Category with this name or slug already exists' },
-        { status: 409 }
-      )
+        { error: "Category with this name or slug already exists" },
+        { status: 409 },
+      );
     }
-    console.error('Error creating category:', error)
+    console.error("Error creating category:", error);
     return NextResponse.json(
-      { error: 'Failed to create category' },
-      { status: 500 }
-    )
+      { error: "Failed to create category" },
+      { status: 500 },
+    );
   }
 }

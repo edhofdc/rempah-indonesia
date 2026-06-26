@@ -1,21 +1,21 @@
-import { prisma } from '@/lib/db'
-import { Badge } from '@/components/ui/badge'
-import { ChevronRight, HelpCircle } from 'lucide-react'
+import { prisma } from "@/lib/db";
+import { Badge } from "@/components/ui/badge";
+import { ChevronRight, HelpCircle } from "lucide-react";
 
 // ─── Data fetching ──────────────────────────────────────────────
 
 async function getFAQs() {
   const faqs = await prisma.fAQ.findMany({
     where: { isActive: true },
-    orderBy: { order: 'asc' },
-  })
-  return faqs
+    orderBy: { order: "asc" },
+  });
+  return faqs;
 }
 
 // ─── FAQ Page ───────────────────────────────────────────────────
 
 export default async function FAQPage() {
-  const faqs = await getFAQs()
+  const faqs = await getFAQs();
 
   return (
     <div className="min-h-screen">
@@ -48,7 +48,7 @@ export default async function FAQPage() {
                   <summary className="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-sm font-medium text-brown-800 transition-colors hover:text-green-700 dark:text-cream-100 dark:hover:text-green-400 [&::-webkit-details-marker]:hidden">
                     <span className="flex items-start gap-3">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
-                        {String(index + 1).padStart(2, '0')}
+                        {String(index + 1).padStart(2, "0")}
                       </span>
                       <span className="pt-0.5">{faq.question}</span>
                     </span>
@@ -105,5 +105,5 @@ export default async function FAQPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 import {
   Leaf,
   Mail,
@@ -8,43 +8,43 @@ import {
   AtSign,
   Camera,
   ChevronRight,
-} from 'lucide-react'
+} from "lucide-react";
 
 const QUICK_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Products', href: '/products' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'FAQ', href: '/faq' },
-] as const
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Products", href: "/products" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact", href: "/contact" },
+  { label: "FAQ", href: "/faq" },
+] as const;
 
 const CONTACT_INFO = [
   {
     icon: MapPin,
-    label: 'Address',
-    value: 'Jakarta, Indonesia',
+    label: "Address",
+    value: "Jakarta, Indonesia",
   },
   {
     icon: Phone,
-    label: 'Phone',
-    value: '+62 812-3456-7890',
+    label: "Phone",
+    value: "+62 812-3456-7890",
   },
   {
     icon: Mail,
-    label: 'Email',
-    value: 'info@rempah-indonesia.com',
+    label: "Email",
+    value: "info@rempah-indonesia.com",
   },
-] as const
+] as const;
 
 const SOCIAL_LINKS = [
-  { icon: Globe, href: '#', label: 'Website' },
-  { icon: AtSign, href: '#', label: 'Social' },
-  { icon: Camera, href: '#', label: 'Gallery' },
-] as const
+  { icon: Globe, href: "#", label: "Website" },
+  { icon: AtSign, href: "#", label: "Social" },
+  { icon: Camera, href: "#", label: "Gallery" },
+] as const;
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="border-t border-green-200/60 bg-gradient-to-b from-green-50 to-white dark:border-green-800/60 dark:from-green-950 dark:to-green-950">
@@ -63,13 +63,13 @@ export function Footer() {
             </Link>
             <p className="text-sm leading-relaxed text-green-600 dark:text-green-400">
               Your trusted source for authentic Indonesian spices and herbs.
-              Bringing the rich flavors of the archipelago to kitchens
-              worldwide since 2020.
+              Bringing the rich flavors of the archipelago to kitchens worldwide
+              since 2020.
             </p>
             {/* Social icons */}
             <div className="flex items-center gap-3">
               {SOCIAL_LINKS.map((social) => {
-                const Icon = social.icon
+                const Icon = social.icon;
                 return (
                   <Link
                     key={social.label}
@@ -79,7 +79,7 @@ export function Footer() {
                   >
                     <Icon className="h-4 w-4" />
                   </Link>
-                )
+                );
               })}
             </div>
           </div>
@@ -111,7 +111,7 @@ export function Footer() {
             </h3>
             <ul className="space-y-3">
               {CONTACT_INFO.map((item) => {
-                const Icon = item.icon
+                const Icon = item.icon;
                 return (
                   <li key={item.label} className="flex items-start gap-3">
                     <Icon className="mt-0.5 h-4 w-4 shrink-0 text-green-600 dark:text-green-400" />
@@ -124,7 +124,7 @@ export function Footer() {
                       </p>
                     </div>
                   </li>
-                )
+                );
               })}
             </ul>
           </div>
@@ -174,5 +174,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

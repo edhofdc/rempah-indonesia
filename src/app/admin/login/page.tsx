@@ -1,42 +1,42 @@
-'use client'
+"use client";
 
-import { useState, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
-import { Leaf, Lock, User, LogIn } from 'lucide-react'
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Leaf, Lock, User, LogIn } from "lucide-react";
 
 export default function AdminLoginPage() {
-  const router = useRouter()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      const res = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
-      })
+      });
 
-      const data = await res.json()
+      const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Login failed')
-        return
+        setError(data.error || "Login failed");
+        return;
       }
 
-      localStorage.setItem('admin_token', data.token)
-      localStorage.setItem('admin_user', JSON.stringify(data.user))
-      router.push('/admin')
+      localStorage.setItem("admin_token", data.token);
+      localStorage.setItem("admin_user", JSON.stringify(data.user));
+      router.push("/admin");
     } catch {
-      setError('Connection error. Please try again.')
+      setError("Connection error. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -48,7 +48,9 @@ export default function AdminLoginPage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-700 shadow-lg shadow-green-900/30 mb-4">
             <Leaf className="w-10 h-10 text-cream-100" />
           </div>
-          <h1 className="text-3xl font-bold text-cream-100">Rempah Indonesia</h1>
+          <h1 className="text-3xl font-bold text-cream-100">
+            Rempah Indonesia
+          </h1>
           <p className="text-green-300 mt-1">Admin Dashboard</p>
         </div>
 
@@ -109,8 +111,20 @@ export default function AdminLoginPage() {
               {loading ? (
                 <span className="flex items-center gap-2">
                   <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
                   </svg>
                   Signing in...
                 </span>
@@ -125,9 +139,10 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="text-center mt-6 text-green-400 text-xs">
-          &copy; {new Date().getFullYear()} Rempah Indonesia. All rights reserved.
+          &copy; {new Date().getFullYear()} Rempah Indonesia. All rights
+          reserved.
         </p>
       </div>
     </div>
-  )
+  );
 }

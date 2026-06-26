@@ -1,33 +1,33 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Search, SlidersHorizontal, ArrowUpDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 // ─── Types ───────────────────────────────────────────────────────
 
 interface Category {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 interface ProductsFilterProps {
-  categories: Category[]
-  currentSearch: string
-  currentCategory: string
-  currentSort: string
+  categories: Category[];
+  currentSearch: string;
+  currentCategory: string;
+  currentSort: string;
 }
 
 // ─── Sort options ────────────────────────────────────────────────
 
 const SORT_OPTIONS = [
-  { value: 'newest', label: 'Newest' },
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'name-asc', label: 'Name: A to Z' },
-  { value: 'name-desc', label: 'Name: Z to A' },
-] as const
+  { value: "newest", label: "Newest" },
+  { value: "price-asc", label: "Price: Low to High" },
+  { value: "price-desc", label: "Price: High to Low" },
+  { value: "name-asc", label: "Name: A to Z" },
+  { value: "name-desc", label: "Name: Z to A" },
+] as const;
 
 // ─── Component ───────────────────────────────────────────────────
 
@@ -37,67 +37,69 @@ export default function ProductsFilter({
   currentCategory,
   currentSort,
 }: ProductsFilterProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // ── Helpers ──────────────────────────────────────────────────
 
   const createQueryString = useCallback(
     (params: Record<string, string>) => {
-      const sp = new URLSearchParams(searchParams.toString())
+      const sp = new URLSearchParams(searchParams.toString());
       for (const [key, value] of Object.entries(params)) {
         if (value) {
-          sp.set(key, value)
+          sp.set(key, value);
         } else {
-          sp.delete(key)
+          sp.delete(key);
         }
       }
-      return sp.toString()
+      return sp.toString();
     },
     [searchParams],
-  )
+  );
 
   // ── Debounced search ─────────────────────────────────────────
 
-  const [searchValue, setSearchValue] = useState(currentSearch)
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const [searchValue, setSearchValue] = useState(currentSearch);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (searchValue !== currentSearch) {
-        const qs = createQueryString({ search: searchValue, page: '1' })
-        router.push(`/products?${qs}`)
+        const qs = createQueryString({ search: searchValue, page: "1" });
+        router.push(`/products?${qs}`);
       }
-    }, 400)
+    }, 400);
     return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-  }, [searchValue, currentSearch, createQueryString, router])
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [searchValue, currentSearch, createQueryString, router]);
 
   // Sync search input when URL changes externally (browser nav)
   useEffect(() => {
-    setSearchValue(currentSearch)
-  }, [currentSearch])
+    setSearchValue(currentSearch);
+  }, [currentSearch]);
 
   // ── Sort handler ─────────────────────────────────────────────
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const qs = createQueryString({ sort: e.target.value, page: '1' })
-    router.push(`/products?${qs}`)
-  }
+    const qs = createQueryString({ sort: e.target.value, page: "1" });
+    router.push(`/products?${qs}`);
+  };
 
   // ── Category handlers ────────────────────────────────────────
 
   const handleCategoryClick = (categoryId: string) => {
-    const qs = createQueryString({ category: categoryId, page: '1' })
-    router.push(`/products?${qs}`)
-  }
+    const qs = createQueryString({ category: categoryId, page: "1" });
+    router.push(`/products?${qs}`);
+  };
 
   const handleAllClick = () => {
-    const qs = createQueryString({ category: '', page: '1' })
-    router.push(`/products?${qs}`)
-  }
+    const qs = createQueryString({ category: "", page: "1" });
+    router.push(`/products?${qs}`);
+  };
 
   // ── Render ───────────────────────────────────────────────────
 
@@ -141,8 +143,8 @@ export default function ProductsFilter({
           onClick={handleAllClick}
           className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
             !currentCategory
-              ? 'bg-green-700 text-white'
-              : 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800'
+              ? "bg-green-700 text-white"
+              : "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800"
           }`}
         >
           All
@@ -154,8 +156,8 @@ export default function ProductsFilter({
             onClick={() => handleCategoryClick(cat.id)}
             className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
               currentCategory === cat.id
-                ? 'bg-green-700 text-white'
-                : 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800'
+                ? "bg-green-700 text-white"
+                : "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800"
             }`}
           >
             {cat.name}
@@ -163,5 +165,5 @@ export default function ProductsFilter({
         ))}
       </div>
     </>
-  )
+  );
 }

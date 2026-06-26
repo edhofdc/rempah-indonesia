@@ -9,17 +9,17 @@ A full-featured **e-commerce platform** for Indonesian spices built with Next.js
 
 ## 🚀 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | Next.js 15 (App Router) |
-| **UI Library** | React 19 |
-| **Language** | TypeScript (strict) |
-| **Styling** | Tailwind CSS + shadcn/ui |
-| **Database** | SQLite (via Prisma ORM + libSQL) |
-| **Auth** | JWT (bcryptjs + jose) |
-| **Forms** | React Hook Form + Zod validation |
-| **State** | Zustand |
-| **Design** | Spice branding (green, brown, cream, gold) |
+| Layer          | Technology                                 |
+| -------------- | ------------------------------------------ |
+| **Framework**  | Next.js 15 (App Router)                    |
+| **UI Library** | React 19                                   |
+| **Language**   | TypeScript (strict)                        |
+| **Styling**    | Tailwind CSS + shadcn/ui                   |
+| **Database**   | SQLite (via Prisma ORM + libSQL)           |
+| **Auth**       | JWT (bcryptjs + jose)                      |
+| **Forms**      | React Hook Form + Zod validation           |
+| **State**      | Zustand                                    |
+| **Design**     | Spice branding (green, brown, cream, gold) |
 
 ## 📁 Project Structure
 
@@ -46,6 +46,7 @@ A full-featured **e-commerce platform** for Indonesian spices built with Next.js
 ## ✨ Features
 
 ### Public Pages
+
 - **Homepage** — Hero section, featured products, testimonials, newsletter
 - **Products** — Product catalog with spices catalogue and search
 - **About** — Company story and values
@@ -54,6 +55,7 @@ A full-featured **e-commerce platform** for Indonesian spices built with Next.js
 - **FAQ** — Accordion-style FAQ
 
 ### Admin Dashboard (JWT Protected)
+
 - **Dashboard** — Sales overview, low stock alerts, recent orders
 - **Products** — Manage product inventory (CRUD)
 - **Categories** — Manage product categories
@@ -62,6 +64,7 @@ A full-featured **e-commerce platform** for Indonesian spices built with Next.js
 - **FAQ** — Manage FAQ entries
 
 ### Security
+
 - JWT-based authentication with Edge Runtime support (`jose`)
 - Middleware protects all `/api/admin/*` routes (returns 401)
 - Password hashing with bcryptjs
@@ -70,6 +73,7 @@ A full-featured **e-commerce platform** for Indonesian spices built with Next.js
 ## 🛠️ Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - npm / yarn / pnpm / bun
 
@@ -103,21 +107,21 @@ npm run dev
 
 ## 📡 API Endpoints
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/products` | No | List all products |
-| GET | `/api/products/[id]` | No | Product detail |
-| GET | `/api/categories` | No | List categories |
-| POST | `/api/auth` | No | Login (returns JWT) |
-| GET | `/api/auth` | No | Verify JWT |
-| GET | `/api/admin/dashboard` | JWT | Dashboard stats |
-| GET | `/api/admin/products` | JWT | Admin product list |
-| POST | `/api/admin/products` | JWT | Create product |
-| GET | `/api/admin/categories` | JWT | Admin category list |
-| GET | `/api/admin/orders` | JWT | Order management |
-| GET | `/api/admin/settings` | JWT | Settings |
-| GET | `/api/admin/faq` | JWT | FAQ management |
-| POST | `/api/admin/faq` | JWT | Create FAQ |
+| Method | Endpoint                | Auth | Description         |
+| ------ | ----------------------- | ---- | ------------------- |
+| GET    | `/api/products`         | No   | List all products   |
+| GET    | `/api/products/[id]`    | No   | Product detail      |
+| GET    | `/api/categories`       | No   | List categories     |
+| POST   | `/api/auth`             | No   | Login (returns JWT) |
+| GET    | `/api/auth`             | No   | Verify JWT          |
+| GET    | `/api/admin/dashboard`  | JWT  | Dashboard stats     |
+| GET    | `/api/admin/products`   | JWT  | Admin product list  |
+| POST   | `/api/admin/products`   | JWT  | Create product      |
+| GET    | `/api/admin/categories` | JWT  | Admin category list |
+| GET    | `/api/admin/orders`     | JWT  | Order management    |
+| GET    | `/api/admin/settings`   | JWT  | Settings            |
+| GET    | `/api/admin/faq`        | JWT  | FAQ management      |
+| POST   | `/api/admin/faq`        | JWT  | Create FAQ          |
 
 ## 🧪 QA Automation
 

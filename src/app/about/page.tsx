@@ -1,11 +1,6 @@
-import { prisma } from '@/lib/db'
-import { Badge } from '@/components/ui/badge'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { prisma } from "@/lib/db";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Leaf,
   Award,
@@ -17,26 +12,26 @@ import {
   Users,
   Target,
   Eye,
-} from 'lucide-react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
+} from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 // ─── Data fetching ──────────────────────────────────────────────
 
 async function getCompanyProfile() {
   const profile = await prisma.companyProfile.findUnique({
-    where: { id: 'main' },
-  })
-  return profile
+    where: { id: "main" },
+  });
+  return profile;
 }
 
 async function getTestimonials() {
   const testimonials = await prisma.testimonial.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: 3,
-  })
-  return testimonials
+  });
+  return testimonials;
 }
 
 // ─── Team values ────────────────────────────────────────────────
@@ -44,51 +39,63 @@ async function getTestimonials() {
 const CORE_VALUES = [
   {
     icon: Leaf,
-    title: 'Quality First',
+    title: "Quality First",
     description:
-      'We never compromise on quality. Every spice is hand-selected and rigorously tested to ensure it meets our premium standards.',
+      "We never compromise on quality. Every spice is hand-selected and rigorously tested to ensure it meets our premium standards.",
   },
   {
     icon: HeartHandshake,
-    title: 'Fair Trade',
+    title: "Fair Trade",
     description:
-      'We believe in equitable partnerships with local farmers, ensuring they receive fair compensation for their craft.',
+      "We believe in equitable partnerships with local farmers, ensuring they receive fair compensation for their craft.",
   },
   {
     icon: Globe,
-    title: 'Sustainability',
+    title: "Sustainability",
     description:
-      'Our sourcing practices prioritize environmental stewardship and sustainable farming methods.',
+      "Our sourcing practices prioritize environmental stewardship and sustainable farming methods.",
   },
   {
     icon: Users,
-    title: 'Community',
+    title: "Community",
     description:
-      'We invest in the communities that grow our spices, supporting education, infrastructure, and local development.',
+      "We invest in the communities that grow our spices, supporting education, infrastructure, and local development.",
   },
   {
     icon: Target,
-    title: 'Authenticity',
+    title: "Authenticity",
     description:
-      'Every product we sell carries the true essence of Indonesia — unadulterated, pure, and genuine.',
+      "Every product we sell carries the true essence of Indonesia — unadulterated, pure, and genuine.",
   },
   {
     icon: Eye,
-    title: 'Transparency',
+    title: "Transparency",
     description:
-      'From farm to table, we maintain complete traceability so you know exactly where your spices come from.',
+      "From farm to table, we maintain complete traceability so you know exactly where your spices come from.",
   },
-]
+];
 
 // ─── Milestones ─────────────────────────────────────────────────
 
 const MILESTONES = [
-  { year: '2020', event: 'Rempah Indonesia founded in Jakarta' },
-  { year: '2021', event: 'Partnered with 50+ local farmers across Java and Sumatra' },
-  { year: '2022', event: 'Expanded to international shipping, reaching 15 countries' },
-  { year: '2023', event: 'Launched direct-to-consumer platform and mobile app' },
-  { year: '2024', event: 'Certified as a Fair Trade partner; 200+ farmer partnerships' },
-]
+  { year: "2020", event: "Rempah Indonesia founded in Jakarta" },
+  {
+    year: "2021",
+    event: "Partnered with 50+ local farmers across Java and Sumatra",
+  },
+  {
+    year: "2022",
+    event: "Expanded to international shipping, reaching 15 countries",
+  },
+  {
+    year: "2023",
+    event: "Launched direct-to-consumer platform and mobile app",
+  },
+  {
+    year: "2024",
+    event: "Certified as a Fair Trade partner; 200+ farmer partnerships",
+  },
+];
 
 // ─── About Page ─────────────────────────────────────────────────
 
@@ -96,7 +103,7 @@ export default async function AboutPage() {
   const [profile, testimonials] = await Promise.all([
     getCompanyProfile(),
     getTestimonials(),
-  ])
+  ]);
 
   return (
     <div className="min-h-screen">
@@ -126,7 +133,7 @@ export default async function AboutPage() {
                 Our Journey
               </Badge>
               <h2 className="mb-6 text-3xl font-bold leading-tight text-brown-800 dark:text-cream-100 sm:text-4xl">
-                A Heritage of Flavor, A Future of{' '}
+                A Heritage of Flavor, A Future of{" "}
                 <span className="text-green-700 dark:text-green-400">
                   Sustainability
                 </span>
@@ -141,16 +148,15 @@ export default async function AboutPage() {
                 </p>
                 <p>
                   Founded in 2020, our mission is to honor this incredible
-                  heritage by connecting the world directly with the farmers
-                  and growers who cultivate these extraordinary spices. We
-                  believe that the best spices come from healthy soil, skilled
-                  hands, and generations of knowledge passed down through
-                  families.
+                  heritage by connecting the world directly with the farmers and
+                  growers who cultivate these extraordinary spices. We believe
+                  that the best spices come from healthy soil, skilled hands,
+                  and generations of knowledge passed down through families.
                 </p>
                 <p>
                   Today, we work with over 200 farming families across Java,
-                  Sumatra, Sulawesi, and the Maluku Islands. Every spice we
-                  sell is traceable back to its source — ensuring quality,
+                  Sumatra, Sulawesi, and the Maluku Islands. Every spice we sell
+                  is traceable back to its source — ensuring quality,
                   authenticity, and fair compensation for our growers.
                 </p>
               </div>
@@ -184,7 +190,7 @@ export default async function AboutPage() {
                 <div
                   key={m.year}
                   className={`relative flex items-center gap-8 ${
-                    i % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+                    i % 2 === 0 ? "flex-row" : "flex-row-reverse"
                   }`}
                 >
                   <div className="w-1/2 text-right">
@@ -235,7 +241,7 @@ export default async function AboutPage() {
               <CardContent>
                 <p className="leading-relaxed text-green-700 dark:text-green-300">
                   {profile?.vision ??
-                    'To be the world\'s most trusted source of authentic Indonesian spices, preserving the rich culinary heritage of Nusantara while empowering local farming communities through sustainable and equitable trade.'}
+                    "To be the world's most trusted source of authentic Indonesian spices, preserving the rich culinary heritage of Nusantara while empowering local farming communities through sustainable and equitable trade."}
                 </p>
               </CardContent>
             </Card>
@@ -249,7 +255,7 @@ export default async function AboutPage() {
               <CardContent>
                 <p className="leading-relaxed text-green-700 dark:text-green-300">
                   {profile?.mission ??
-                    'To source the highest quality spices from sustainable farms across Indonesia, support local farmers through fair trade partnerships, and deliver authentic flavors with exceptional freshness to customers worldwide.'}
+                    "To source the highest quality spices from sustainable farms across Indonesia, support local farmers through fair trade partnerships, and deliver authentic flavors with exceptional freshness to customers worldwide."}
                 </p>
               </CardContent>
             </Card>
@@ -268,14 +274,14 @@ export default async function AboutPage() {
               What We Stand For
             </h2>
             <p className="mx-auto max-w-2xl text-green-600 dark:text-green-400">
-              These core principles guide every decision we make and every
-              spice we source.
+              These core principles guide every decision we make and every spice
+              we source.
             </p>
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {CORE_VALUES.map((value) => {
-              const Icon = value.icon
+              const Icon = value.icon;
               return (
                 <Card
                   key={value.title}
@@ -293,7 +299,7 @@ export default async function AboutPage() {
                     </p>
                   </CardContent>
                 </Card>
-              )
+              );
             })}
           </div>
         </div>
@@ -364,5 +370,5 @@ export default async function AboutPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

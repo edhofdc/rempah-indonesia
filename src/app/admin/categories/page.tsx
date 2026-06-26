@@ -1,137 +1,139 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { ListTree, Plus, Edit3, Trash2, X } from 'lucide-react'
-import { slugify } from '@/lib/utils'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ListTree, Plus, Edit3, Trash2, X } from "lucide-react";
+import { slugify } from "@/lib/utils";
 
 interface Category {
-  id: string
-  name: string
-  slug: string
-  description: string | null
-  image: string | null
-  _count: { products: number }
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  image: string | null;
+  _count: { products: number };
 }
 
 interface CategoryForm {
-  name: string
-  slug: string
-  description: string
+  name: string;
+  slug: string;
+  description: string;
 }
 
-const emptyForm: CategoryForm = { name: '', slug: '', description: '' }
+const emptyForm: CategoryForm = { name: "", slug: "", description: "" };
 
 export default function AdminCategoriesPage() {
-  const router = useRouter()
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [editingId, setEditingId] = useState<string | null>(null)
-  const [form, setForm] = useState<CategoryForm>(emptyForm)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
+  const router = useRouter();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState<CategoryForm>(emptyForm);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   async function fetchCategories() {
     try {
-      const token = localStorage.getItem('admin_token')
-      const res = await fetch('/api/admin/categories', {
+      const token = localStorage.getItem("admin_token");
+      const res = await fetch("/api/admin/categories", {
         headers: { Authorization: `Bearer ${token}` },
-      })
-      if (!res.ok) throw new Error('Failed')
-      const data = await res.json()
-      setCategories(data)
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      setCategories(data);
     } catch {
-      setError('Failed to load categories')
+      setError("Failed to load categories");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   useEffect(() => {
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   function openAddModal() {
-    setEditingId(null)
-    setForm(emptyForm)
-    setError('')
-    setModalOpen(true)
+    setEditingId(null);
+    setForm(emptyForm);
+    setError("");
+    setModalOpen(true);
   }
 
   function openEditModal(cat: Category) {
-    setEditingId(cat.id)
+    setEditingId(cat.id);
     setForm({
       name: cat.name,
       slug: cat.slug,
-      description: cat.description || '',
-    })
-    setError('')
-    setModalOpen(true)
+      description: cat.description || "",
+    });
+    setError("");
+    setModalOpen(true);
   }
 
   async function handleSave() {
     if (!form.name || !form.slug) {
-      setError('Name and slug are required')
-      return
+      setError("Name and slug are required");
+      return;
     }
 
-    setSaving(true)
-    setError('')
+    setSaving(true);
+    setError("");
 
     try {
-      const token = localStorage.getItem('admin_token')
-      const method = editingId ? 'PUT' : 'POST'
-      const body = editingId ? { ...form, id: editingId } : form
+      const token = localStorage.getItem("admin_token");
+      const method = editingId ? "PUT" : "POST";
+      const body = editingId ? { ...form, id: editingId } : form;
 
-      const res = await fetch('/api/admin/categories', {
+      const res = await fetch("/api/admin/categories", {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
-      })
+      });
 
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Failed to save')
+        const data = await res.json();
+        throw new Error(data.error || "Failed to save");
       }
 
-      setModalOpen(false)
-      await fetchCategories()
+      setModalOpen(false);
+      await fetchCategories();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to save category')
+      setError(err instanceof Error ? err.message : "Failed to save category");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Are you sure you want to delete this category?')) return
+    if (!confirm("Are you sure you want to delete this category?")) return;
 
     try {
-      const token = localStorage.getItem('admin_token')
+      const token = localStorage.getItem("admin_token");
       const res = await fetch(`/api/admin/categories?id=${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
-      })
+      });
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Failed to delete')
+        const data = await res.json();
+        throw new Error(data.error || "Failed to delete");
       }
-      await fetchCategories()
+      await fetchCategories();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to delete category')
+      setError(
+        err instanceof Error ? err.message : "Failed to delete category",
+      );
     }
   }
 
   function updateFormField(field: keyof CategoryForm, value: string) {
-    const updated = { ...form, [field]: value }
-    if (field === 'name' && !editingId) {
-      updated.slug = slugify(value)
+    const updated = { ...form, [field]: value };
+    if (field === "name" && !editingId) {
+      updated.slug = slugify(value);
     }
-    setForm(updated)
+    setForm(updated);
   }
 
   if (loading) {
@@ -142,7 +144,7 @@ export default function AdminCategoriesPage() {
           <p className="text-green-600 text-sm">Loading categories...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -165,7 +167,9 @@ export default function AdminCategoriesPage() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">{error}</div>
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          {error}
+        </div>
       )}
 
       {/* Categories Grid */}
@@ -204,7 +208,9 @@ export default function AdminCategoriesPage() {
                 </div>
               </div>
               {cat.description && (
-                <p className="text-xs text-green-600 mb-3 line-clamp-2">{cat.description}</p>
+                <p className="text-xs text-green-600 mb-3 line-clamp-2">
+                  {cat.description}
+                </p>
               )}
               <div className="text-xs text-green-500 bg-green-50 rounded-lg px-2 py-1 inline-block">
                 {cat._count.products} product(s)
@@ -217,45 +223,61 @@ export default function AdminCategoriesPage() {
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setModalOpen(false)} />
+          <div
+            className="fixed inset-0 bg-black/50"
+            onClick={() => setModalOpen(false)}
+          />
           <div className="relative bg-white rounded-xl border border-green-200 shadow-xl w-full max-w-md animate-scale-in">
             <div className="px-5 py-4 border-b border-green-100 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-brown-800">
-                {editingId ? 'Edit Category' : 'Add Category'}
+                {editingId ? "Edit Category" : "Add Category"}
               </h2>
-              <button onClick={() => setModalOpen(false)} className="p-1 rounded-lg hover:bg-green-50 text-green-600">
+              <button
+                onClick={() => setModalOpen(false)}
+                className="p-1 rounded-lg hover:bg-green-50 text-green-600"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="p-5 space-y-4">
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm">{error}</div>
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-lg text-sm">
+                  {error}
+                </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Name *</label>
+                <label className="block text-sm font-medium text-green-700 mb-1">
+                  Name *
+                </label>
                 <input
                   type="text"
                   value={form.name}
-                  onChange={(e) => updateFormField('name', e.target.value)}
+                  onChange={(e) => updateFormField("name", e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-green-300 bg-white text-green-900 focus:outline-none focus:ring-2 focus:ring-green-600 text-sm"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Slug *</label>
+                <label className="block text-sm font-medium text-green-700 mb-1">
+                  Slug *
+                </label>
                 <input
                   type="text"
                   value={form.slug}
-                  onChange={(e) => updateFormField('slug', e.target.value)}
+                  onChange={(e) => updateFormField("slug", e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-green-300 bg-white text-green-900 focus:outline-none focus:ring-2 focus:ring-green-600 text-sm"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-green-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-green-700 mb-1">
+                  Description
+                </label>
                 <textarea
                   value={form.description}
-                  onChange={(e) => updateFormField('description', e.target.value)}
+                  onChange={(e) =>
+                    updateFormField("description", e.target.value)
+                  }
                   rows={3}
                   className="w-full px-3 py-2 rounded-lg border border-green-300 bg-white text-green-900 focus:outline-none focus:ring-2 focus:ring-green-600 text-sm resize-none"
                 />
@@ -273,12 +295,12 @@ export default function AdminCategoriesPage() {
                 disabled={saving}
                 className="px-4 py-2 text-sm bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors disabled:opacity-50"
               >
-                {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
+                {saving ? "Saving..." : editingId ? "Update" : "Create"}
               </button>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

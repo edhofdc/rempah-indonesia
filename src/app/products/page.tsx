@@ -1,28 +1,23 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { prisma } from '@/lib/db'
-import { Suspense } from 'react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
-import { formatPrice } from '@/lib/utils'
-import ProductsFilter from '@/components/products/products-filter'
-import {
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Package,
-} from 'lucide-react'
+import Link from "next/link";
+import Image from "next/image";
+import { prisma } from "@/lib/db";
+import { Suspense } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
+import ProductsFilter from "@/components/products/products-filter";
+import { Search, ChevronLeft, ChevronRight, Package } from "lucide-react";
 
-const ITEMS_PER_PAGE = 12
+const ITEMS_PER_PAGE = 12;
 
 // ─── Data fetching ──────────────────────────────────────────────
 
 async function getCategories() {
   const categories = await prisma.category.findMany({
-    orderBy: { name: 'asc' },
-  })
-  return categories
+    orderBy: { name: "asc" },
+  });
+  return categories;
 }
 
 async function getProducts({
@@ -31,26 +26,26 @@ async function getProducts({
   sort,
   page,
 }: {
-  search?: string
-  categoryId?: string
-  sort?: string
-  page: number
+  search?: string;
+  categoryId?: string;
+  sort?: string;
+  page: number;
 }) {
-  const where: Record<string, unknown> = { status: 'active' }
+  const where: Record<string, unknown> = { status: "active" };
 
   if (search) {
-    where.name = { contains: search }
+    where.name = { contains: search };
   }
 
   if (categoryId) {
-    where.categoryId = categoryId
+    where.categoryId = categoryId;
   }
 
-  let orderBy: Record<string, string> = { createdAt: 'desc' }
-  if (sort === 'price-asc') orderBy = { price: 'asc' }
-  else if (sort === 'price-desc') orderBy = { price: 'desc' }
-  else if (sort === 'name-asc') orderBy = { name: 'asc' }
-  else if (sort === 'name-desc') orderBy = { name: 'desc' }
+  let orderBy: Record<string, string> = { createdAt: "desc" };
+  if (sort === "price-asc") orderBy = { price: "asc" };
+  else if (sort === "price-desc") orderBy = { price: "desc" };
+  else if (sort === "name-asc") orderBy = { name: "asc" };
+  else if (sort === "name-desc") orderBy = { name: "desc" };
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({
@@ -64,9 +59,9 @@ async function getProducts({
       take: ITEMS_PER_PAGE,
     }),
     prisma.product.count({ where }),
-  ])
+  ]);
 
-  return { products, total, totalPages: Math.ceil(total / ITEMS_PER_PAGE) }
+  return { products, total, totalPages: Math.ceil(total / ITEMS_PER_PAGE) };
 }
 
 // ─── Page ───────────────────────────────────────────────────────
@@ -74,13 +69,13 @@ async function getProducts({
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const sp = await searchParams
-  const currentPage = Math.max(1, Number(sp.page) || 1)
-  const currentSearch = typeof sp.search === 'string' ? sp.search : ''
-  const currentCategory = typeof sp.category === 'string' ? sp.category : ''
-  const currentSort = typeof sp.sort === 'string' ? sp.sort : 'newest'
+  const sp = await searchParams;
+  const currentPage = Math.max(1, Number(sp.page) || 1);
+  const currentSearch = typeof sp.search === "string" ? sp.search : "";
+  const currentCategory = typeof sp.category === "string" ? sp.category : "";
+  const currentSort = typeof sp.sort === "string" ? sp.sort : "newest";
 
   const [categories, { products, total, totalPages }] = await Promise.all([
     getCategories(),
@@ -90,23 +85,23 @@ export default async function ProductsPage({
       sort: currentSort,
       page: currentPage,
     }),
-  ])
+  ]);
 
   // Build base URL for pagination/filter links
   const buildUrl = (params: Record<string, string>) => {
-    const usp = new URLSearchParams()
+    const usp = new URLSearchParams();
     const merged = {
       ...(currentSearch && { search: currentSearch }),
       ...(currentCategory && { category: currentCategory }),
-      ...(currentSort !== 'newest' && { sort: currentSort }),
+      ...(currentSort !== "newest" && { sort: currentSort }),
       ...params,
-    }
+    };
     for (const [k, v] of Object.entries(merged)) {
-      if (v) usp.set(k, v)
+      if (v) usp.set(k, v);
     }
-    const qs = usp.toString()
-    return `/products${qs ? `?${qs}` : ''}`
-  }
+    const qs = usp.toString();
+    return `/products${qs ? `?${qs}` : ""}`;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-green-950 dark:to-green-950">
@@ -122,7 +117,11 @@ export default async function ProductsPage({
             </p>
           </div>
 
-          <Suspense fallback={<div className="h-12 animate-pulse rounded-lg bg-green-100 dark:bg-green-900" />}>
+          <Suspense
+            fallback={
+              <div className="h-12 animate-pulse rounded-lg bg-green-100 dark:bg-green-900" />
+            }
+          >
             <ProductsFilter
               categories={categories}
               currentSearch={currentSearch}
@@ -137,18 +136,18 @@ export default async function ProductsPage({
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Result count */}
         <p className="mb-6 text-sm text-green-500">
-          Showing{' '}
+          Showing{" "}
           <span className="font-medium text-green-700 dark:text-green-300">
             {products.length}
-          </span>{' '}
-          of{' '}
+          </span>{" "}
+          of{" "}
           <span className="font-medium text-green-700 dark:text-green-300">
             {total}
-          </span>{' '}
+          </span>{" "}
           products
           {currentSearch && (
             <>
-              {' '}
+              {" "}
               for &ldquo;
               <span className="font-medium text-green-700 dark:text-green-300">
                 {currentSearch}
@@ -161,7 +160,7 @@ export default async function ProductsPage({
         {products.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => {
-              const primaryImage = product.images[0]
+              const primaryImage = product.images[0];
               return (
                 <Link key={product.id} href={`/products/${product.id}`}>
                   <Card className="group h-full overflow-hidden transition-shadow hover:shadow-lg">
@@ -209,7 +208,7 @@ export default async function ProductsPage({
                     </CardContent>
                   </Card>
                 </Link>
-              )
+              );
             })}
           </div>
         ) : (
@@ -248,21 +247,19 @@ export default async function ProductsPage({
             )}
 
             {/* Pages */}
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-              (page) => (
-                <Link
-                  key={page}
-                  href={buildUrl({ page: String(page) })}
-                  className={`inline-flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
-                    page === currentPage
-                      ? 'bg-green-700 text-white'
-                      : 'border border-green-300 text-green-700 hover:bg-green-50 dark:border-green-700 dark:text-green-300 dark:hover:bg-green-900'
-                  }`}
-                >
-                  {page}
-                </Link>
-              ),
-            )}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Link
+                key={page}
+                href={buildUrl({ page: String(page) })}
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                  page === currentPage
+                    ? "bg-green-700 text-white"
+                    : "border border-green-300 text-green-700 hover:bg-green-50 dark:border-green-700 dark:text-green-300 dark:hover:bg-green-900"
+                }`}
+              >
+                {page}
+              </Link>
+            ))}
 
             {/* Next */}
             {currentPage < totalPages ? (
@@ -281,5 +278,5 @@ export default async function ProductsPage({
         )}
       </section>
     </div>
-  )
+  );
 }
